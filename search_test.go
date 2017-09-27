@@ -4,10 +4,11 @@ import "testing"
 
 func TestSearchExactName(t *testing.T) {
 	var results []string
+	var err error
 	name := "pedmiston/bytecounter"
-	results = Search(name, 1)
-	if len(results) == 0 {
-		t.Fatalf("search for '%s' returned no results", name)
+	results, err = Search(name, 1)
+	if err != nil {
+		t.Fatal(err)
 	}
 	if r := results[0]; r != name {
 		t.Errorf("searched for %s instead returned %s", name, r)
