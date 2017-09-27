@@ -19,12 +19,17 @@ func Search(query string, limit int) ([]string, error) {
 		return nil, fmt.Errorf("query '%s' returned no results", query)
 	}
 
-	names := make([]string, limit)
-	for i, repository := range result.Repositories {
-		names[i] = repository.GetFullName()
-		if i == limit-1 {
-			break
-		}
+	nResults := min(len(result.Repositories), limit)
+	names := make([]string, nResults)
+	for i := 0; i < nResults; i++ {
+		names[i] = result.Repositories[i].GetFullName()
 	}
 	return names, nil
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
