@@ -3,6 +3,7 @@ package bytecounter
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/google/go-github/github"
@@ -10,14 +11,14 @@ import (
 
 // A Total contains the summary statistics for a repo.
 type Total struct {
-	Name string
+	Name     string
+	Forks    int
+	Watching int
+	Stars    int
+	// Contributors int
 	// Commits      int
 	// Branches     int
 	// Releases     int
-	// Contributors int
-	// Watching     int
-	// Stars        int
-	// Forks        int
 	// Issues       int
 	// PullRequests int
 }
@@ -42,24 +43,30 @@ func GetTotals(repos []string) (Totals, error) {
 			return nil, fmt.Errorf("couldn't get repo %v: %v", fullName, err)
 		}
 		totals[i] = &Total{
-			Name: repo.GetFullName(),
+			Name:     repo.GetFullName(),
+			Forks:    repo.GetForksCount(),
+			Watching: repo.GetWatchersCount(),
+			Stars:    repo.GetStargazersCount(),
 		}
 
 	}
 	return totals, nil
 }
 
+// ToCSV converts a slice of Total objects to a slice of records
+// ready to be written to CSV.
 func (t Totals) ToCSV() [][]string {
 	records := make([][]string, 1+len(t))
-	records[0] = CSVHeader
+	records[0] = csvHeader
 	for i, total := range t {
 		records[i+1] = total.ToRecord()
 	}
 	return records
 }
 
-var CSVHeader = []string{"Name"}
+var csvHeader = []string{"Name", "Forks", "Watching", "Stars"}
 
+// ToRecord converts the Total object to a slice of strings
 func (t Total) ToRecord() []string {
-	return []string{t.Name}
+	return []string{t.Name, strconv.Itoa(t.Forks), strconv.Itoa(t.Watching), strconv.Itoa(t.Stars)}
 }
