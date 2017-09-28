@@ -30,7 +30,7 @@ func GetTotals(repos []string) (Totals, error) {
 	client := github.NewClient(nil)
 	ctx := context.Background()
 
-	totals := make([]*Total, len(repos))
+	totals := make(Totals, len(repos))
 	for i, fullName := range repos {
 		parts := strings.Split(fullName, "/")
 		if len(parts) != 2 {
@@ -50,10 +50,16 @@ func GetTotals(repos []string) (Totals, error) {
 }
 
 func (t Totals) ToCSV() [][]string {
-	records := make([][]string, len(t)+1)
-	records[0] = []string{"Name"}
+	records := make([][]string, 1+len(t))
+	records[0] = CSVHeader
 	for i, total := range t {
-		records[i+1] = []string{total.Name}
+		records[i+1] = total.ToRecord()
 	}
 	return records
+}
+
+var CSVHeader = []string{"Name"}
+
+func (t Total) ToRecord() []string {
+	return []string{t.Name}
 }
