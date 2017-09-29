@@ -24,7 +24,7 @@ type Total struct {
 }
 
 // Totals is a slice of Total objects.
-type Totals []*Total
+type Totals []Total
 
 // GetTotals returns the summary statistics for each repo in repos.
 func GetTotals(repos []string) (Totals, error) {
@@ -42,7 +42,7 @@ func GetTotals(repos []string) (Totals, error) {
 		if err != nil {
 			return nil, fmt.Errorf("couldn't get repo %v: %v", fullName, err)
 		}
-		totals[i] = &Total{
+		totals[i] = Total{
 			Name:     repo.GetFullName(),
 			Forks:    repo.GetForksCount(),
 			Watching: repo.GetWatchersCount(),

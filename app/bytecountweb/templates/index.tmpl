@@ -13,8 +13,8 @@
     <div class="container">
       <h1>bytecounter</h1>
       Search GitHub repos and compare their summary statistics.
-      <form action="/search" method="POST" class="form-inline">
-        <input type="text" id="search" name="query" class="form-control mb-2 mr-sm-2 mb-sm-0">
+      <form action="/" method="POST" class="form-inline">
+        <input type="text" name="query" class="form-control mb-2 mr-sm-2 mb-sm-0">
         <button type="submit" class="btn btn-primary">Search</button>
       </form>
     </div>
@@ -26,6 +26,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 
     <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="static/main.js"></script>
+    <script>
+    var data = {{.}};
+    </script>
   </body>
 </html>
